@@ -25,10 +25,10 @@ class EchoServer():
         except socket.error as e:
             print(str(e))
 
-    # Sets the maximum number of threads and listens
+    # Sets the maximum number of the queue of pending connections and listens
     def set_max_threads(self):
         try:
-            self._server_socket.listen(self._max_threads) # Listens self._max_threads
+            self._server_socket.listen(int(self._max_threads*.1)) # Listens (backlog queue size)
         except socket.error as e:
             print(str(e))
 
@@ -51,7 +51,7 @@ class EchoServer():
                 data = connection.recv(1024).decode('utf-8') # Receives message from client
                 # Closes connection if no data was send in the message
                 if not data:
-                    raise ValueError(f"Conexão encerrada com {connection}")
+                    raise ValueError(f"Conexão encerrada com {connection.getpeername()}")
                 response = 'Servidor: ' + self.echoing_message(data) # Echoes the message
                 connection.sendall(str.encode(response)) # Sends reponse to client
         except socket.error as e:
@@ -68,11 +68,16 @@ class EchoServer():
         # Executes main loop
         try:
             while True:
-                client, address = self._server_socket.accept() # Accepts connection from client
-                print(f"Conectado a: {address[0]}:{address[1]}") # Prints client information
-                thread = start_new_thread(self.threaded_client, (client,)) # Starts new thread
-                self._num_threads += 1 # Increments the number of threads
-                print(f"Thread id: {thread}") # Prints thread id
+                if self._num_threads <= self._max_threads:
+                    client, address = self._server_socket.accept() # Accepts connection from client
+                    print(f"Conectado a: {address[0]}:{address[1]}") # Prints client information
+                    thread = start_new_thread(self.threaded_client, (client,)) # Starts new thread
+                    self._num_threads += 1 # Increments the number of threads
+                    print(f"Thread id: {thread}") # Prints thread id
+                    print(f"Número de threads: {self._num_threads}")
+                else: 
+                    print(f"Não aceitamos mais que {self._max_threads} conexões.")
+                    break
         # Finalizes the connection by ctrl + d 
         except EOFError:
             print("\nEco finalizado!")

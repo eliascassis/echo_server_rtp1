@@ -43,6 +43,10 @@ class EchoClient():
             # Finalizes the connection by ctrl + c
             except KeyboardInterrupt:
                 print("\nEco interrompido!")
+            # Some socket error
+            except socket.error as e:
+                print(str(e))
+                print("Erro de conexão!")
             # Closes connection
             finally:
                 self._client_socket.close() # Closes

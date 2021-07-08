@@ -29,11 +29,18 @@ class EchoClient():
             response = self._client_socket.recv(1024).decode('utf-8')
             print(f"Conectado ao servidor de eco: {self._server_host} {self._server_port}")
             print(response)
+            print("Para enviar mensagens utilize o comando abaixo:")
+            print('echo -m "mensagem"')
+            print("Para encerrar a conexão digite:")
+            print('quit')
             # Executes main loop
             try:
                 while True:
-                    Input = input('Diga algo: ') # Gets client input
-                    self._client_socket.sendall(str.encode(Input)) # Sends message to the server
+                    _input = input('> ') # Gets client input
+                    _input = _input.strip().lower() # Removes unnecessary whitespaces
+                    if _input.strip().lower() == 'quit': # Leaves application
+                        raise EOFError
+                    self._client_socket.sendall(str.encode(_input)) # Sends message to the server
                     # Receives response from server
                     response = self._client_socket.recv(1024).decode('utf-8') 
                     print(response) # Prints response

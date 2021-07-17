@@ -15,6 +15,7 @@ Um dos requisitos do trabaho prático proposto define que a aplicação deve ser
 A Aplicação de Eco contém duas entidades necessárias a seu funcionamento: uma entidade **cliente** e uma entidade **servidor**. O **protocolo** que define as regras de comunicação é **assimétrico** - somente a entidade cliente dá parte no envio de mensagens, enquanto a entidade servidor apenas responde às requisições feitas. Ainda, é preciso ressaltar que o protocolo é **orientado à conexão**, havendo uma troca inicial de mensagens para **estabelecimento da conexão**. O DET (Diagrama de Estados e Transições) abaixo apresenta o funcionamento do protocolo implementado, onde as entidades cliente (*Echo Client*) e servidor (*Echo Server*) podem ser vistas como **entidades de protocolo**.
 
 ![det_echo_protocol](images/det/echo_DET.jpg)
+
 *Figura 1: entidades de protocolo cliente e servidor para aplicação de eco*
 
 A **entidade de protocolo cliente** (*Echo Client*) possui os seguintes elementos:

@@ -78,7 +78,50 @@ O cenário abaixo representa o fluxo normal de execução do protocolo.
 ![det_scenery_protocol](images/scenery/echo_scenery_01.jpg)
 *Figura 2: cenário representando o fluxo normal de execução.*
 
-**OBS: AINDA FALTA DESCREVER OS CASOS DE TESTE**
+#### Envio de mensagens
+
+O envio de mensagens ao servidor será feito por meio de comandos, que serão enviados e processados pelo lado servidor da aplicação de echo. Os principais comandos são:
+
+* Responde repetindo a mensagem
+```console
+> echo -m "<MESSAGE>"
+```
+
+* Responde a mensagem com eco
+```console
+> echo -e "<MESSAGE>"
+```
+
+* Encerra a aplicação cliente
+```console
+> quit
+```
+
+**<APÓS FINALIZAÇÃO DA ESPECIFICAÇÃO, VOLTAR NESSA SEÇÃO PARA ACRESCENTAR O USO DOS COMANDOS PARA A MENSAGEM E SUAS DEVIDAS OPÇÕES**
+
+### Casos gerais de teste
+
+Diante do exposto em seções anteriores, para verificar o correto funcionamento do protocolo implementado para a aplicação de eco, propõe-se a execução dos seguintes testes para os cenários que se seguem, abordando o estabelecimento da conexão, o envio de mensagens ao servidor de eco e encerramento da aplicação cliente:
+
+- Estabelecimento da conexão
+
+    1. Tentar conexão com servidor inativo
+    2. Tentar conexão com servidor ativo
+    3. Conectar **X** clientes ao servidor
+    4. Tentar conexão após o número **X** de conexões ter sido atingido
+
+* Envio de mensagens
+
+    1. Tentar enviar uma mensagem ao servidor
+    2. Enviar uma mensagem não entendível pelo servidor (`comando inválido`)
+
++ Encerramento da aplicação
+
+    1. Enviar mensagem de encerramento ao servidor (`quit`) 
+    2. Encerrar o servidor enquanto o cliente ainda está conectado e o envio de mensagens habilitado (`Crtl + c no lado servidor`)
+    3. Encerrar o cliente sem informar o encerramento da aplicação (`Crtl + c no lado cliente`)
+
+Os casos de teste listados acima representam os pontos críticos de funcionamento da aplicação de eco mediante os requisitos levantados. 
 
 ### Módulos
 

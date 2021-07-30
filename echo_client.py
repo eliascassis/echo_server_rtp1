@@ -22,17 +22,18 @@ class EchoClient():
             self._client_socket.connect((self._server_host, self._server_port)) # connects with the server side
         # Caughts socket exception
         except socket.error as e:
-            print(str(e))
+            print(f"{str(e)}\nO servidor está fora do ar. :(")
         # Executes the program 
         else:
             # Gets welcome message from server
             response = self._client_socket.recv(1024).decode('utf-8')
             print(f"Conectado ao servidor de eco: {self._server_host} {self._server_port}")
             print(response)
-            print("Para enviar mensagens utilize o comando abaixo:")
-            print('echo -m "mensagem"')
-            print("Para encerrar a conexão digite:")
-            print('quit')
+            print("\nPara enviar mensagens utilize os comandos abaixo:")
+            print('(1) echo -m "<MENSAGEM>" -> retorna exatamente a mensagem enviada.')
+            print('(2) echo -e "<MENSAGEM>" -> retorna a mensagem enviada com eco.')
+            print("\nPara encerrar a conexão digite:")
+            print('quit\n')
             # Executes main loop
             try:
                 while True:

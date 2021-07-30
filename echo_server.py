@@ -48,14 +48,12 @@ class EchoServer():
         connection.send(str.encode('Seja bem-vindo! Digite uma mensagem e a veja ecoar.'))
         try:
             while True:
-                data = connection.recv(1024).decode('utf-8') # Receives message from client 
+                data = connection.recv(1024).decode('utf-8').lower() # Receives message from client 
                 # Closes connection if no data was send in the message or the client quits
-                if not data or data.lower() == 'quit':
+                if not data or data == 'quit':
                     raise ValueError(f"Conexão encerrada com {connection.getpeername()}")
                 else:
-                    message = search(r'\"(.*)\"',data) # Searches for message
-                    command = search(r'(echo)',data) # Searches for command
-                    parameter = search(r'(-[a-z])',data) # Searches for parameter
+                    command,message,parameter = search(r'^(echo) (-[m|e]) \"([^\"]*)\"$',data).groups()
                     if not message or not parameter or not command:
                         alert = 'Por favor, informe o comando corretamente:\echo -m "<mensagem>"'
                         connection.sendall(str.encode(alert)) # Sends alert to client

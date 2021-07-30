@@ -6,7 +6,7 @@ Este repositório foi criado para desenvolvimento do trabalho da disciplina de R
 
 O trabalho foi desenvolvido com a linguagem **Python** em sua versão **3.8.10**. Tal linguagem foi escolhida devido a sua versatilidade, o que contribui não somente para o desenvolvimento de aplicações em diversos domínios como também auxilia no aprendizado da própria linguagem, permitindo aplicá-la em um cenário distinto do habitual sem maiores problemas. Além disso, a linguagem Python possui vasta documentação e tem sido muito utilizada.
 
-Um dos requisitos do trabaho prático proposto define que a aplicação deve ser *multithreaded*, i. e., deve suportar que vários clientes se conectem ao servidor e consigam enviar mensagens de forma simultânea. Para isso, utilizou-se neste trabalho duas bibliotecas: uma para identificar os processos cliente e o processo servidor (*socket*) e outra para permitir várias conexões (*_thread*). Em relação ao número de *threads* suportado pela aplicação, foi definido que, se o número de conexões ultrapassar um número **X** definido pelo usuário, o servidor não aceitará mais conexões. Tal decisão contribui de forma significativa para a análise de complexidade do programa.
+Um dos requisitos do trabaho prático proposto define que a aplicação deve ser *multithreaded*, i. e., deve suportar que vários clientes se conectem ao servidor e consigam enviar mensagens de forma simultânea. Para isso, utilizou-se neste trabalho duas bibliotecas: uma para identificar os processos cliente e o processo servidor (*socket*) e outra para permitir várias conexões (*_thread*). Em relação ao número de *threads* suportado pela aplicação, foi definido que, se o número de conexões ultrapassar um número **n** definido pelo usuário, o servidor não aceitará mais conexões. Tal decisão contribui de forma significativa para a análise de complexidade do programa.
 
 **OBS**: a biblioteca *socket* do python tem por padrão o uso do protocolo TCP para transporte, o que facilita e muito a definição e desenvolvimento do protocolo para a aplicação de eco implementada neste trabalho.
 
@@ -30,7 +30,7 @@ Eventos:
 
 - connection request: ao ser inicializado, o lado cliente envia uma requisição de conexão ao lado servidor.
 
-- connection response: resposta do servidor à conexão. O servidor aceita a conexão ou recusa a conexão quando o número de clientes conectados for maior que **X**. 
+- connection response: resposta do servidor à conexão. O servidor aceita a conexão ou recusa a conexão quando o número de clientes conectados for maior que **n**. 
 
 - message: representa o envio da mensagem ao servidor.
 
@@ -66,7 +66,7 @@ Ações:
 
 - A3: servidor aceita a conexão.
 
-- A4: servidor recusa a conexão pelo limite **X** de clientes ter sido atingido. 
+- A4: servidor recusa a conexão pelo limite **n** de clientes ter sido atingido. 
 
 - A5: recebe a mensagem do cliente.
 
@@ -98,9 +98,6 @@ O envio de mensagens ao servidor será feito por meio de comandos, que serão en
 ```console
 > quit
 ```
-
-**<APÓS FINALIZAÇÃO DA ESPECIFICAÇÃO, VOLTAR NESSA SEÇÃO PARA ACRESCENTAR O USO DOS COMANDOS PARA A MENSAGEM E SUAS DEVIDAS OPÇÕES**
-
 ### Casos gerais de teste
 
 Diante do exposto em seções anteriores, para verificar o correto funcionamento do protocolo implementado para a aplicação de eco, propõe-se a execução dos seguintes testes para os cenários que se seguem, abordando o estabelecimento da conexão, o envio de mensagens ao servidor de eco e encerramento da aplicação cliente:
@@ -109,8 +106,8 @@ Diante do exposto em seções anteriores, para verificar o correto funcionamento
 
     1. Tentar conexão com servidor inativo
     2. Tentar conexão com servidor ativo
-    3. Conectar **X** clientes ao servidor
-    4. Tentar conexão após o número **X** de conexões ter sido atingido
+    3. Conectar **n** clientes ao servidor
+    4. Tentar conexão após o número **n** de conexões ter sido atingido
 
 * Envio de mensagens
 
@@ -124,6 +121,32 @@ Diante do exposto em seções anteriores, para verificar o correto funcionamento
     3. Encerrar o cliente sem informar o encerramento da aplicação (`Crtl + c no lado cliente`)
 
 Os casos de teste listados acima representam os pontos críticos de funcionamento da aplicação de eco mediante os requisitos levantados. 
+
+#### Teste 1.1 - Tentar conexão com servidor inativo
+
+Para esse teste é esperado que a aplicação retorne uma mensagem informando que o servidor está fora do ar.
+
+![test_1.1](images/tests/test_1.1.jpg)
+
+*Figura 3: Mensagem de servidor fora do ar exibida pela aplicação.*
+
+#### Teste 1.2 - Tentar conexão com servidor ativo
+
+Para esse teste é esperado que a aplicação retorne uma mensagem de boas-vindas, juntamente com uma breve instrução sobre os comandos aceitos pela mesma. Para esse teste a instância do servidor foi inicializada com apenas uma única _thread_.
+
+![test_1.2](images/tests/test_1.2.jpg)
+
+*Figura 4: Mensagem de boas-vindas exibida pela aplicação.*
+
+#### Teste 1.3 - Conectar **n** clientes ao servidor
+
+Para esse teste é esperado que **n** instâncias de clientes sejam conectadas com sucesso. Teste feito para $n = 3$.
+
+![test_1.3](images/tests/test_1.3.jpg)
+
+*Figura 5: Servidor aceitando 3 clientes com sucesso.*
+
+**<OBS: CONTINUAR TESTES DAQUI>**
 
 ### Módulos
 

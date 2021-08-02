@@ -146,9 +146,55 @@ Para esse teste é esperado que **n** instâncias de clientes sejam conectadas c
 
 *Figura 5: Servidor aceitando 3 clientes com sucesso.*
 
-**<OBS: CONTINUAR TESTES DAQUI>**
+#### Teste 1.4 - Conectar **n+1** clientes ao servidor
 
-### Módulos
+Para esse teste é esperado que **n** instâncias de clientes sejam conectadas com sucesso e uma mensagem de erro seja exibida para o cliente **n + 1** ao tentar conectar. Teste feito para $n = 1$.
+
+![test_1.4](images/tests/test_1.4.jpg)
+
+*Figura 6: Servidor recusando cliente após aceitar o número máximo de conexões.*
+
+#### Teste 2.1 - Enviar uma mensagem ao servidor
+
+Para esse teste é esperado que o servidor responda com a mensagem enviada pelo cliente; em acordo com a opção escolhida no comando (_-e_ ou _-m_).
+
+![test_2.1](images/tests/test_2.1.jpg)
+
+*Figura 7: Servidor respondendo a mensagens do cliente.*
+
+#### Teste 2.2 - Enviar um comando inválido ao servidor
+
+Para esse teste é esperado que o servidor informe as opções corretas de comandos quando o cliente enviar um comando inválido.
+
+![test_2.2](images/tests/test_2.2.jpg)
+
+*Figura 8: Servidor informando sintaxe correta dos comandos ao cliente enviar um comando inválido.* 
+
+#### Teste 3.1 - Enviar mensagem de encerramento ao servidor
+
+Para esse teste é esperado que o servidor encerre a conexão e que o _socket_ do cliente seja fechado corretamente.
+
+![test_3.1](images/tests/test_3.1.jpg)
+
+*Figura 9: Cliente sai da aplicação e a conexão é encerrada.* 
+
+#### Teste 3.2 - Encerrar o servidor enquanto o cliente ainda está conectado e o envio de mensagens habilitado 
+
+Para esse teste é esperado que a aplicação identifique um erro de conexão (após algumas tentativas de envio de mensagem) e encerre a aplicação no lado cliente.
+
+![test_3.2](images/tests/test_3.2.jpg)
+
+*Figura 10: Aplicação encerrada após erro de conexão com o servidor durante troca de mensagens.* 
+
+#### Teste 3.3 - Encerrar o cliente sem informar o encerramento da aplicação 
+
+Para esse teste é esperado que o servidor encerre a conexão como se o cliente tivesse executado o comando **quit**.
+
+![test_3.3](images/tests/test_3.3.jpg)
+
+*Figura 11: Cliente sai da aplicação (`ctrl + c`) e a conexão é encerrada.* 
+
+<!-- ### Módulos -->
 
 
 

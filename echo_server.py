@@ -44,23 +44,35 @@ class EchoServer():
 
     # Sets threads for a client 
     def threaded_client(self, connection):
-        # Sends welcome message
-        connection.send(str.encode('Seja bem-vindo! Digite uma mensagem e a veja ecoar.'))
         try:
+            # Sends welcome message or closes connection by thread limit
+            if self._num_threads <= self._max_threads:
+                connection.send(str.encode('Seja bem-vindo! Digite uma mensagem e a veja ecoar.'))
+            else:
+                connection.send(str.encode('%'))
+                raise ValueError(f"Servidor cheio!\nConexão encerrada com {connection.getpeername()}")
             while True:
                 data = connection.recv(1024).decode('utf-8').lower() # Receives message from client 
                 # Closes connection if no data was send in the message or the client quits
                 if not data or data == 'quit':
                     raise ValueError(f"Conexão encerrada com {connection.getpeername()}")
                 else:
-                    command,message,parameter = search(r'^(echo) (-[m|e]) \"([^\"]*)\"$',data).groups()
+                    # Searches for correct pattern in command
+                    data = search(r'^(echo) (-[m|e]) \"([^\"]*)\"$',data)
+                    if data is not None:
+                        data = data.groups()
+                        command = data[0]
+                        parameter = data[1]
+                        message = data[2]
+                    else:
+                        command = parameter = message = ''
                     if not message or not parameter or not command:
-                        alert = 'Por favor, informe o comando corretamente:\echo -m "<mensagem>"'
+                        alert = 'Por favor, informe o comando corretamente:\necho -m "<mensagem>"\necho -e "<mensagem>"\nquit\n'
                         connection.sendall(str.encode(alert)) # Sends alert to client
                         continue
-                    else:
-                        data = message.group(1)
-                response = 'Servidor: ' + self.echoing_message(data) # Echoes the message
+                    data = message
+                    result = data if parameter == "-m" else self.echoing_message(data)
+                response = 'Servidor: ' + result # Echoes the message
                 connection.sendall(str.encode(response)) # Sends reponse to client
         except socket.error as e:
             print(str(e))
@@ -76,16 +88,12 @@ class EchoServer():
         # Executes main loop
         try:
             while True:
-                if self._num_threads <= self._max_threads:
-                    client, address = self._server_socket.accept() # Accepts connection from client
-                    print(f"Conectado a: {address[0]}:{address[1]}") # Prints client information
-                    thread = start_new_thread(self.threaded_client, (client,)) # Starts new thread
-                    self._num_threads += 1 # Increments the number of threads
-                    print(f"Thread id: {thread}") # Prints thread id
-                    print(f"Número de threads: {self._num_threads}")
-                else: 
-                    print(f"Não aceitamos mais que {self._max_threads} conexões.")
-                    break
+                client, address = self._server_socket.accept() # Accepts connection from client
+                print(f"Conectado a: {address[0]}:{address[1]}") # Prints client information
+                self._num_threads += 1 # Increments the number of threads
+                thread = start_new_thread(self.threaded_client, (client,)) # Starts new thread
+                print(f"Thread id: {thread}") # Prints thread id
+                print(f"Número de threads: {self._num_threads}")
         # Finalizes the connection by ctrl + d 
         except EOFError:
             print("\nEco finalizado!")

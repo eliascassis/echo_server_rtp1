@@ -25,17 +25,19 @@ class EchoClient():
             print(f"{str(e)}\nO servidor está fora do ar. :(")
         # Executes the program 
         else:
-            # Gets welcome message from server
-            response = self._client_socket.recv(1024).decode('utf-8')
-            print(f"Conectado ao servidor de eco: {self._server_host} {self._server_port}")
-            print(response)
-            print("\nPara enviar mensagens utilize os comandos abaixo:")
-            print('(1) echo -m "<MENSAGEM>" -> retorna exatamente a mensagem enviada.')
-            print('(2) echo -e "<MENSAGEM>" -> retorna a mensagem enviada com eco.')
-            print("\nPara encerrar a conexão digite:")
-            print('quit\n')
-            # Executes main loop
             try:
+                # Gets welcome message from server
+                response = self._client_socket.recv(1024).decode('utf-8')
+                if response == '%':
+                    raise ValueError("Servidor cheio!")
+                print(f"Conectado ao servidor de eco: {self._server_host} {self._server_port}")
+                print(response)
+                print("\nPara enviar mensagens utilize os comandos abaixo:")
+                print('(1) echo -m "<MENSAGEM>" -> retorna exatamente a mensagem enviada.')
+                print('(2) echo -e "<MENSAGEM>" -> retorna a mensagem enviada com eco.')
+                print("\nPara encerrar a conexão digite:")
+                print('quit\n')
+                # Executes main loop
                 while True:
                     _input = input('> ') # Gets client input
                     _input = _input.strip().lower() # Removes unnecessary whitespaces
@@ -53,6 +55,10 @@ class EchoClient():
                 print("\nEco interrompido!")
             # Some socket error
             except socket.error as e:
+                print(str(e))
+                print("Erro de conexão!")
+            # Some socket error
+            except ValueError as e:
                 print(str(e))
                 print("Erro de conexão!")
             # Closes connection

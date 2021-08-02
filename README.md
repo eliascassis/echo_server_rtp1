@@ -194,15 +194,19 @@ Para esse teste é esperado que o servidor encerre a conexão como se o cliente 
 
 *Figura 11: Cliente sai da aplicação (`ctrl + c`) e a conexão é encerrada.* 
 
+## Executando o código
+
+Para executar a aplicação são necessárias **n + 1** instâncias de terminal. Uma das instâncias deve ser alocada para executar o código do servidor enquanto as demais **n** instâncias para o código cliente.
+
+* Servidor
+```console
+> ./echo_server.py <número de threads>
+```
+* Cliente
+```console
+> ./echo_client.py
+```
+
+Após todas as instâncias desejadas estarem em execução, basta seguir as intruções apresentadas no _console_. As seções anteriores, durante a explicação do funcionamento e testes da aplicação, também possuem exemplos de execução e reprodução dos testes executados.
+
 <!-- ### Módulos -->
-
-
-
-
-
-
-
-
-
-
-
